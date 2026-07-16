@@ -3,6 +3,8 @@ import pandas as pd
 file_path = "data/bug_reports.csv"
 
 data = pd.read_csv(file_path)
+data["text"] = data["text"].str.strip()
+data["label"] = data["label"].str.strip()
 
 print(data.head())
 print("Satır sayısı:", data.shape[0])
