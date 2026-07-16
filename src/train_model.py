@@ -1,4 +1,4 @@
-
+import joblib
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
@@ -100,3 +100,25 @@ print(classification_report(y_test, logistic_predictions))
 
 print("\nNaive Bayes ayrıntılı sonuçları:")
 print(classification_report(y_test, naive_bayes_predictions))
+
+
+# Doğruluk oranlarına göre en iyi modeli seç
+if logistic_accuracy >= naive_bayes_accuracy:
+    best_model = logistic_model
+    best_model_name = "Logistic Regression"
+else:
+    best_model = naive_bayes_model
+    best_model_name = "Multinomial Naive Bayes"
+
+
+# En iyi modeli models klasörüne kaydet
+joblib.dump(best_model, "models/best_model.joblib")
+
+
+# TF-IDF aracını models klasörüne kaydet
+joblib.dump(vectorizer, "models/tfidf_vectorizer.joblib")
+
+
+print("\nKaydedilen en iyi model:", best_model_name)
+print("Model ve TF-IDF dosyaları başarıyla kaydedildi.")
+
