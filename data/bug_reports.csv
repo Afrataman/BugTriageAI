@@ -5,3 +5,12 @@ Kullanıcılar karanlık tema özelliği istiyor.,Feature
 Uygulamaya şifre sıfırlama seçeneği eklenmeli.,Feature
 Kurulum adımları README dosyasında açıklanmalı.,Documentation
 API kullanım örnekleri dokümana eklenmeli.,Documentation
+Sepete ürün eklendiğinde toplam fiyat güncellenmiyor.,Bug
+Bildirim ekranı açılırken boş sayfa görünüyor.,Bug
+Form gönderildiğinde aynı kayıt iki kez oluşuyor.,Bug
+Kullanıcılar favorilere ekleme özelliği istiyor.,Feature
+Arama sonuçlarına tarih filtresi eklenmeli.,Feature
+Profil sayfasına dil seçeneği eklenmeli.,Feature
+Şifre değiştirme adımları kullanıcı kılavuzuna eklenmeli.,Documentation
+API hata kodları dokümantasyonda açıklanmalı.,Documentation
+Kurulum için gerekli Python sürümü README dosyasında belirtilmeli.,Documentation
