@@ -14,3 +14,18 @@ Profil sayfasına dil seçeneği eklenmeli.,Feature
 Şifre değiştirme adımları kullanıcı kılavuzuna eklenmeli.,Documentation
 API hata kodları dokümantasyonda açıklanmalı.,Documentation
 Kurulum için gerekli Python sürümü README dosyasında belirtilmeli.,Documentation
+Ödeme tamamlandıktan sonra sipariş durumu güncellenmiyor.,Bug
+Mobil görünümde menü butonu tepki vermiyor.,Bug
+Yanlış parola girildiğinde hata mesajı ekranda görünmüyor.,Bug
+Dosya indir butonuna basıldığında boş dosya oluşuyor.,Bug
+Kullanıcı oturumu kapattıktan sonra özel sayfalara erişebiliyor.,Bug
+Siparişlere favori etiketi ekleme özelliği geliştirilmeli.,Feature
+Kullanıcı profilinde telefon numarası değiştirme seçeneği olmalı.,Feature
+Arama sayfasına sonuçları fiyata göre sıralama özelliği eklenmeli.,Feature
+Bildirimlerin açılıp kapatılabileceği bir ayar eklenmeli.,Feature
+Kullanıcıların hesaplarını geçici olarak dondurabilmesi sağlanmalı.,Feature
+Veritabanı kurulum adımları dokümantasyona eklenmeli.,Documentation
+Giriş endpointinin istek ve cevap örnekleri açıklanmalı.,Documentation
+Ortam değişkenlerinin nasıl ayarlanacağı README dosyasında belirtilmeli.,Documentation
+Sık karşılaşılan kurulum hataları için çözüm bölümü hazırlanmalı.,Documentation
+Projenin klasör yapısı dokümantasyonda açıklanmalı.,Documentation
