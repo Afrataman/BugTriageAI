@@ -1,0 +1,11 @@
+{
+    "best_model": "Logistic Regression",
+    "dataset_size": 30,
+    "classes": [
+        "Bug",
+        "Documentation",
+        "Feature"
+    ],
+    "selection_metric": "Cross-validation weighted F1",
+    "cross_validation_folds": 5
+}

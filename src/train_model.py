@@ -1,174 +1,248 @@
+import json
+from pathlib import Path
+
 import joblib
+import matplotlib.pyplot as plt
 import pandas as pd
+
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
+    ConfusionMatrixDisplay,
     accuracy_score,
-    classification_report,
     precision_recall_fscore_support,
 )
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import (
+    StratifiedKFold,
+    cross_validate,
+    train_test_split,
+)
 from sklearn.naive_bayes import MultinomialNB
-
-# CSV veri setini oku
-data = pd.read_csv("data/bug_reports.csv")
+from sklearn.pipeline import Pipeline
 
 
-# X: Modelin inceleyeceği metinler
+# Projenin ana klasörünü bul
+project_root = Path(__file__).resolve().parent.parent
+
+data_file = project_root / "data" / "bug_reports.csv"
+models_folder = project_root / "models"
+
+models_folder.mkdir(exist_ok=True)
+
+
+# Veri setini oku ve temel temizliği yap
+data = pd.read_csv(data_file)
+
+data = data.dropna(subset=["text", "label"])
+data["text"] = data["text"].str.strip()
+data["label"] = data["label"].str.strip()
+data = data.drop_duplicates()
+
+
 X = data["text"]
-
-# y: Metinlerin doğru sınıfları
 y = data["label"]
 
 
-# Veriyi eğitim ve test bölümlerine ayır
+# Son kontrol için ayrı test verisi oluştur
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.20,
     random_state=42,
-    stratify=y
+    stratify=y,
 )
 
 
-# Eğitim ve test verisi sayılarını göster
-print("Eğitim verisi sayısı:", len(X_train))
-print("Test verisi sayısı:", len(X_test))
+# Modeller
+models = {
+    "Logistic Regression": LogisticRegression(
+        max_iter=1000,
+        random_state=42,
+    ),
+    "Multinomial Naive Bayes": MultinomialNB(),
+}
 
 
-# Sınıfların dengeli dağılıp dağılmadığını göster
-print("\nEğitim sınıf dağılımı:")
-print(y_train.value_counts())
-
-print("\nTest sınıf dağılımı:")
-print(y_test.value_counts())
-
-
-# Metinleri sayısal verilere çevirecek TF-IDF aracını oluştur
-vectorizer = TfidfVectorizer()
-
-
-# Eğitim metinlerindeki kelimeleri öğren ve sayısal verilere dönüştür
-X_train_tfidf = vectorizer.fit_transform(X_train)
-
-
-# Test metinlerini eğitim verisinden öğrenilen kelimelerle dönüştür
-X_test_tfidf = vectorizer.transform(X_test)
-
-
-# Oluşan sayısal tabloların boyutlarını göster
-print("\nEğitim TF-IDF boyutu:", X_train_tfidf.shape)
-print("Test TF-IDF boyutu:", X_test_tfidf.shape)
-
-
-# Logistic Regression modelini oluştur
-logistic_model = LogisticRegression(max_iter=1000)
-
-# Modeli eğitim verisiyle eğit
-logistic_model.fit(X_train_tfidf, y_train)
-
-# Test verileri üzerinde tahmin yap
-logistic_predictions = logistic_model.predict(X_test_tfidf)
-
-# Doğruluk oranını hesapla
-logistic_accuracy = accuracy_score(y_test, logistic_predictions)
-
-print("\nLogistic Regression sonuçları:")
-print("Gerçek sınıflar:", list(y_test))
-print("Tahmin edilen sınıflar:", list(logistic_predictions))
-print("Accuracy:", logistic_accuracy)
-
-# Multinomial Naive Bayes modelini oluştur
-naive_bayes_model = MultinomialNB()
-
-# Modeli eğitim verisiyle eğit
-naive_bayes_model.fit(X_train_tfidf, y_train)
-
-# Test verileri üzerinde tahmin yap
-naive_bayes_predictions = naive_bayes_model.predict(X_test_tfidf)
-
-# Doğruluk oranını hesapla
-naive_bayes_accuracy = accuracy_score(
-    y_test,
-    naive_bayes_predictions
+# 5 katlı ve sınıf dengeli çapraz doğrulama
+cross_validation = StratifiedKFold(
+    n_splits=5,
+    shuffle=True,
+    random_state=42,
 )
 
-print("\nMultinomial Naive Bayes sonuçları:")
-print("Gerçek sınıflar:", list(y_test))
-print("Tahmin edilen sınıflar:", list(naive_bayes_predictions))
-print("Accuracy:", naive_bayes_accuracy)
+
+scoring = [
+    "accuracy",
+    "precision_weighted",
+    "recall_weighted",
+    "f1_weighted",
+]
 
 
-print("\nLogistic Regression ayrıntılı sonuçları:")
-print(classification_report(y_test, logistic_predictions))
+results = []
+trained_models = {}
+predictions = {}
 
-print("\nNaive Bayes ayrıntılı sonuçları:")
-print(classification_report(y_test, naive_bayes_predictions))
 
-# Logistic Regression için ortalama metrikleri hesapla
-logistic_precision, logistic_recall, logistic_f1, _ = (
-    precision_recall_fscore_support(
-        y_test,
-        logistic_predictions,
-        average="weighted",
-        zero_division=0
+for model_name, classifier in models.items():
+
+    # Çapraz doğrulamada TF-IDF ve model birlikte çalışır
+    pipeline = Pipeline(
+        [
+            (
+                "tfidf",
+                TfidfVectorizer(
+                    ngram_range=(1, 2),
+                    sublinear_tf=True,
+                ),
+            ),
+            ("classifier", classifier),
+        ]
     )
-)
 
-# Naive Bayes için ortalama metrikleri hesapla
-naive_precision, naive_recall, naive_f1, _ = (
-    precision_recall_fscore_support(
-        y_test,
-        naive_bayes_predictions,
-        average="weighted",
-        zero_division=0
+    cv_scores = cross_validate(
+        pipeline,
+        X,
+        y,
+        cv=cross_validation,
+        scoring=scoring,
     )
-)
 
-# İki modelin sonuçlarını tablo hâline getir
-model_results = pd.DataFrame(
-    [
+    # Ayrı test verisi için TF-IDF oluştur
+    vectorizer = TfidfVectorizer(
+        ngram_range=(1, 2),
+        sublinear_tf=True,
+    )
+
+    X_train_tfidf = vectorizer.fit_transform(X_train)
+    X_test_tfidf = vectorizer.transform(X_test)
+
+    classifier.fit(X_train_tfidf, y_train)
+
+    model_predictions = classifier.predict(X_test_tfidf)
+
+    accuracy = accuracy_score(
+        y_test,
+        model_predictions,
+    )
+
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        y_test,
+        model_predictions,
+        average="weighted",
+        zero_division=0,
+    )
+
+    trained_models[model_name] = classifier
+    predictions[model_name] = model_predictions
+
+    results.append(
         {
-            "Model": "Logistic Regression",
-            "Accuracy": logistic_accuracy,
-            "Precision": logistic_precision,
-            "Recall": logistic_recall,
-            "F1 Score": logistic_f1
-        },
-        {
-            "Model": "Multinomial Naive Bayes",
-            "Accuracy": naive_bayes_accuracy,
-            "Precision": naive_precision,
-            "Recall": naive_recall,
-            "F1 Score": naive_f1
+            "Model": model_name,
+            "Holdout Accuracy": accuracy,
+            "Holdout Precision": precision,
+            "Holdout Recall": recall,
+            "Holdout F1": f1,
+            "CV Accuracy Mean": cv_scores["test_accuracy"].mean(),
+            "CV Accuracy Std": cv_scores["test_accuracy"].std(),
+            "CV F1 Mean": cv_scores["test_f1_weighted"].mean(),
+            "CV F1 Std": cv_scores["test_f1_weighted"].std(),
         }
-    ]
+    )
+
+
+results_table = pd.DataFrame(results)
+results_table = results_table.round(4)
+
+results_table.to_csv(
+    models_folder / "model_results.csv",
+    index=False,
 )
 
-# Sonuçları CSV dosyasına kaydet
-model_results.to_csv(
-    "models/model_results.csv",
-    index=False
+
+# En iyi modeli çapraz doğrulama F1 değerine göre seç
+best_result = max(
+    results,
+    key=lambda result: result["CV F1 Mean"],
 )
 
-print("\nModel sonuçları models/model_results.csv dosyasına kaydedildi.")
-# Doğruluk oranlarına göre en iyi modeli seç
-if logistic_accuracy >= naive_bayes_accuracy:
-    best_model = logistic_model
-    best_model_name = "Logistic Regression"
+best_model_name = best_result["Model"]
+
+
+# En iyi modeli tüm veriyle yeniden eğit
+final_vectorizer = TfidfVectorizer(
+    ngram_range=(1, 2),
+    sublinear_tf=True,
+)
+
+X_all_tfidf = final_vectorizer.fit_transform(X)
+
+if best_model_name == "Logistic Regression":
+    final_model = LogisticRegression(
+        max_iter=1000,
+        random_state=42,
+    )
 else:
-    best_model = naive_bayes_model
-    best_model_name = "Multinomial Naive Bayes"
+    final_model = MultinomialNB()
+
+final_model.fit(X_all_tfidf, y)
 
 
-# En iyi modeli models klasörüne kaydet
-joblib.dump(best_model, "models/best_model.joblib")
+joblib.dump(
+    final_model,
+    models_folder / "best_model.joblib",
+)
+
+joblib.dump(
+    final_vectorizer,
+    models_folder / "tfidf_vectorizer.joblib",
+)
 
 
-# TF-IDF aracını models klasörüne kaydet
-joblib.dump(vectorizer, "models/tfidf_vectorizer.joblib")
+# En iyi modelin test tahminleriyle confusion matrix oluştur
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    predictions[best_model_name],
+    labels=sorted(y.unique()),
+)
+
+plt.title(f"Confusion Matrix - {best_model_name}")
+plt.tight_layout()
+
+plt.savefig(
+    models_folder / "confusion_matrix.png",
+    dpi=200,
+    bbox_inches="tight",
+)
+
+plt.close()
 
 
-print("\nKaydedilen en iyi model:", best_model_name)
-print("Model ve TF-IDF dosyaları başarıyla kaydedildi.")
+# Model hakkındaki özet bilgileri kaydet
+metadata = {
+    "best_model": best_model_name,
+    "dataset_size": len(data),
+    "classes": sorted(y.unique().tolist()),
+    "selection_metric": "Cross-validation weighted F1",
+    "cross_validation_folds": 5,
+}
 
+with open(
+    models_folder / "model_metadata.json",
+    "w",
+    encoding="utf-8",
+) as file:
+    json.dump(
+        metadata,
+        file,
+        ensure_ascii=False,
+        indent=4,
+    )
+
+
+print("\nModel karşılaştırma sonuçları:")
+print(results_table.to_string(index=False))
+
+print("\nSeçilen en iyi model:", best_model_name)
+print("Toplam veri sayısı:", len(data))
+print("Model dosyaları başarıyla güncellendi.")
