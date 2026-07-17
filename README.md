@@ -25,3 +25,6 @@ Bug
 
 Confidence:
 52.36%
+## Live Application
+
+[Open BugTriage AI](https://afrataman-bugtriage-ai.streamlit.app/)
