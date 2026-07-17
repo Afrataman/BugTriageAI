@@ -1,7 +1,11 @@
 import joblib
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    precision_recall_fscore_support,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -101,7 +105,53 @@ print(classification_report(y_test, logistic_predictions))
 print("\nNaive Bayes ayrıntılı sonuçları:")
 print(classification_report(y_test, naive_bayes_predictions))
 
+# Logistic Regression için ortalama metrikleri hesapla
+logistic_precision, logistic_recall, logistic_f1, _ = (
+    precision_recall_fscore_support(
+        y_test,
+        logistic_predictions,
+        average="weighted",
+        zero_division=0
+    )
+)
 
+# Naive Bayes için ortalama metrikleri hesapla
+naive_precision, naive_recall, naive_f1, _ = (
+    precision_recall_fscore_support(
+        y_test,
+        naive_bayes_predictions,
+        average="weighted",
+        zero_division=0
+    )
+)
+
+# İki modelin sonuçlarını tablo hâline getir
+model_results = pd.DataFrame(
+    [
+        {
+            "Model": "Logistic Regression",
+            "Accuracy": logistic_accuracy,
+            "Precision": logistic_precision,
+            "Recall": logistic_recall,
+            "F1 Score": logistic_f1
+        },
+        {
+            "Model": "Multinomial Naive Bayes",
+            "Accuracy": naive_bayes_accuracy,
+            "Precision": naive_precision,
+            "Recall": naive_recall,
+            "F1 Score": naive_f1
+        }
+    ]
+)
+
+# Sonuçları CSV dosyasına kaydet
+model_results.to_csv(
+    "models/model_results.csv",
+    index=False
+)
+
+print("\nModel sonuçları models/model_results.csv dosyasına kaydedildi.")
 # Doğruluk oranlarına göre en iyi modeli seç
 if logistic_accuracy >= naive_bayes_accuracy:
     best_model = logistic_model
