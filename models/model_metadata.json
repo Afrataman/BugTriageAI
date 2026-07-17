@@ -1,6 +1,6 @@
 {
     "best_model": "Logistic Regression",
-    "dataset_size": 30,
+    "dataset_size": 90,
     "classes": [
         "Bug",
         "Documentation",

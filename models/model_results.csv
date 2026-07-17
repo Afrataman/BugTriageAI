@@ -1,3 +1,3 @@
 Model,Holdout Accuracy,Holdout Precision,Holdout Recall,Holdout F1,CV Accuracy Mean,CV Accuracy Std,CV F1 Mean,CV F1 Std
-Logistic Regression,0.8333,0.8889,0.8333,0.8222,0.9,0.0816,0.8933,0.0871
-Multinomial Naive Bayes,0.8333,0.8889,0.8333,0.8222,0.8667,0.1247,0.8622,0.126
+Logistic Regression,0.8333,0.8889,0.8333,0.8222,0.8778,0.0544,0.8764,0.0551
+Multinomial Naive Bayes,0.8333,0.8889,0.8333,0.8222,0.8778,0.0544,0.8696,0.0679

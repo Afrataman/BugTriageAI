@@ -1,4 +1,4 @@
-text,label
+﻿text,label
 Login butonuna basıldığında uygulama kapanıyor.,Bug
 Profil fotoğrafı yüklenirken hata oluşuyor.,Bug
 Kullanıcılar karanlık tema özelliği istiyor.,Feature
@@ -29,3 +29,63 @@ Giriş endpointinin istek ve cevap örnekleri açıklanmalı.,Documentation
 Ortam değişkenlerinin nasıl ayarlanacağı README dosyasında belirtilmeli.,Documentation
 Sık karşılaşılan kurulum hataları için çözüm bölümü hazırlanmalı.,Documentation
 Projenin klasör yapısı dokümantasyonda açıklanmalı.,Documentation
+Filtre değiştirildiğinde arama sonuçları yenilenmiyor.,Bug
+Şifre sıfırlama e-postasındaki bağlantı 404 hatası veriyor.,Bug
+Büyük bir dosya yüklenirken tarayıcı donuyor.,Bug
+Dışa aktarılan raporda Türkçe karakterler bozuk görünüyor.,Bug
+Bildirim sayacı bazı kullanıcılarda negatif değer gösteriyor.,Bug
+Sayfa yenilendiğinde sepetteki ürünler kayboluyor.,Bug
+Seçilen tarih kaydedilirken bir önceki gün olarak görünüyor.,Bug
+Mobil klavye form gönderme butonunun üzerini kapatıyor.,Bug
+Aynı sipariş için iki farklı fatura numarası oluşturuluyor.,Bug
+Yetkisi olmayan kullanıcı yönetici butonunu görebiliyor.,Bug
+Silinen ürün arama sonuçlarında görünmeye devam ediyor.,Bug
+İndirim kodu ödeme sırasında iki kez uygulanıyor.,Bug
+Google ile giriş yapıldıktan sonra yönlendirme döngüye giriyor.,Bug
+PDF raporunun son sayfası oluşturulmuyor.,Bug
+Otomatik kaydetme daha yeni olan değişikliklerin üzerine yazıyor.,Bug
+Oturum süresi dolduğunda kullanıcı giriş ekranına yönlendirilmiyor.,Bug
+Arama işlemi büyük ve küçük harflere göre farklı sonuç veriyor.,Bug
+Saat dilimi değiştirildiğinde rapor grafiği yanlış verileri gösteriyor.,Bug
+Geri tuşuna basıldığında parola alanındaki değer görünür oluyor.,Bug
+İsteğe bağlı alan boş gönderildiğinde API 500 hatası döndürüyor.,Bug
+Kullanıcıların iki aşamalı doğrulamayı etkinleştirebilmesi sağlanmalı.,Feature
+Arama geçmişini temizlemek için bir buton eklenmeli.,Feature
+Sipariş listesine Excel olarak dışa aktarma özelliği eklenmeli.,Feature
+Kullanıcılar profil fotoğraflarını kırpabilmeli.,Feature
+Uygulamaya açık ve koyu tema arasında otomatik geçiş eklenmeli.,Feature
+Bildirimler okunmadı olarak işaretlenebilmelidir.,Feature
+Raporlar belirli tarihlerde otomatik olarak e-posta ile gönderilmeli.,Feature
+Kullanıcıların birden fazla teslimat adresi kaydedebilmesi sağlanmalı.,Feature
+Ürün karşılaştırma ekranı eklenmeli.,Feature
+Yönetici paneline toplu kullanıcı silme özelliği eklenmeli.,Feature
+Formlara taslak olarak kaydetme seçeneği eklenmeli.,Feature
+Kullanıcılar uygulama dilini profil ayarlarından değiştirebilmeli.,Feature
+Arama sonuçları puana göre sıralanabilmeli.,Feature
+Projelerde ekip üyelerini etiketleme özelliği olmalı.,Feature
+Sisteme takvim görünümü eklenmeli.,Feature
+Kullanıcıların kendi bildirim seslerini seçebilmesi sağlanmalı.,Feature
+Yüklenen dosyalar için ön izleme ekranı eklenmeli.,Feature
+Kullanıcı etkinliklerini gösteren zaman çizelgesi oluşturulmalı.,Feature
+Raporlara özel tarih aralığı filtresi eklenmeli.,Feature
+Kullanıcıların hesap verilerini indirebilmesi sağlanmalı.,Feature
+JWT yapılandırma adımları geliştirici dokümanında açıklanmalı.,Documentation
+Docker ile çalıştırma komutları README dosyasına eklenmeli.,Documentation
+API kimlik doğrulama örnekleri dokümantasyonda gösterilmeli.,Documentation
+Veri tabanı yedekleme işlemi kullanıcı kılavuzunda anlatılmalı.,Documentation
+Geliştirme ortamının kurulumu adım adım belgelenmeli.,Documentation
+Her ortam değişkeninin görevi README dosyasında açıklanmalı.,Documentation
+API cevap kodları için açıklayıcı bir tablo hazırlanmalı.,Documentation
+Yeni geliştiriciler için projeye katkı rehberi yazılmalı.,Documentation
+Şifre politikaları güvenlik dokümanına eklenmeli.,Documentation
+Model eğitim komutları proje kılavuzunda açıklanmalı.,Documentation
+Streamlit uygulamasının başlatılma adımları belgelenmeli.,Documentation
+CSV veri setindeki sütunların anlamı dokümana eklenmeli.,Documentation
+Geri bildirim dosyasının nasıl kullanıldığı açıklanmalı.,Documentation
+Üretim ortamına yayınlama adımları README dosyasına yazılmalı.,Documentation
+Sık kullanılan Git komutları katkı rehberine eklenmeli.,Documentation
+Model değerlendirme metriklerinin anlamı açıklanmalı.,Documentation
+Confusion matrix görselinin nasıl yorumlanacağı belgelenmeli.,Documentation
+Desteklenen Python sürümleri kurulum sayfasında belirtilmeli.,Documentation
+Bilinen sorunlar için ayrı bir dokümantasyon bölümü hazırlanmalı.,Documentation
+Proje lisansı ve kullanım koşulları README dosyasında açıklanmalı.,Documentation
