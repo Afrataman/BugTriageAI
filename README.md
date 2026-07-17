@@ -1,19 +1,3 @@
-# BugTriage AI
-[![Project Tests](https://github.com/Afrataman/BugTriageAI/actions/workflows/tests.yml/badge.svg)](https://github.com/Afrataman/BugTriageAI/actions/workflows/tests.yml)
-BugTriage AI is a machine learning application that classifies software issue descriptions into three categories:
-
-- Bug
-- Feature
-- Documentation
-
-The project uses a custom-trained text classification model instead of relying only on an external AI API.
-
-## Project Purpose
-
-Software teams receive many issue reports, feature requests, and documentation requests. Manually categorizing these records can take time.
-
-BugTriage AI analyzes the entered issue description and predicts its category together with a confidence score.
-
 Example:
 
 ```text
@@ -24,7 +8,12 @@ Prediction:
 Bug
 
 Confidence:
-52.36%
+The confidence score changes depending on the entered text.
+```
+
+> The current dataset contains more than 90 labeled examples across Bug, Feature, and Documentation. The dataset is still limited, so model results and confidence scores should be interpreted carefully.
+
 ## Live Application
 
 [Open BugTriage AI](https://smart-bug-triage-aa.streamlit.app/)
+
