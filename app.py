@@ -4,7 +4,7 @@ from pathlib import Path
 import joblib
 import pandas as pd
 import streamlit as st
-
+import json
 
 # --------------------------------------------------
 # DOSYA YOLLARI
@@ -15,7 +15,8 @@ vectorizer_file = Path("models/tfidf_vectorizer.joblib")
 results_file = Path("models/model_results.csv")
 dataset_file = Path("data/bug_reports.csv")
 feedback_file = Path("data/feedback.csv")
-
+metadata_file = Path("models/model_metadata.json")
+confusion_matrix_file = Path("models/confusion_matrix.png")
 
 # --------------------------------------------------
 # MODEL VE TF-IDF ARACINI YÜKLE
@@ -85,7 +86,61 @@ if results_file.exists():
             "gerçek kullanım performansını kesin olarak göstermez."
         )
 
+# --------------------------------------------------
+# MODEL EĞİTİM ÖZETİ
+# --------------------------------------------------
 
+if metadata_file.exists():
+    with metadata_file.open(
+        "r",
+        encoding="utf-8"
+    ) as file:
+        metadata = json.load(file)
+
+    with st.expander("Model eğitim özeti"):
+        first_column, second_column = st.columns(2)
+
+        first_column.metric(
+            "En iyi model",
+            metadata["best_model"]
+        )
+
+        second_column.metric(
+            "Veri sayısı",
+            metadata["dataset_size"]
+        )
+
+        st.write(
+            "Sınıflar:",
+            ", ".join(metadata["classes"])
+        )
+
+        st.write(
+            "Model seçim ölçütü:",
+            metadata["selection_metric"]
+        )
+
+        st.write(
+            "Çapraz doğrulama:",
+            f'{metadata["cross_validation_folds"]} kat'
+        )
+
+
+# --------------------------------------------------
+# CONFUSION MATRIX
+# --------------------------------------------------
+
+if confusion_matrix_file.exists():
+    with st.expander("Confusion matrix"):
+        st.image(
+            str(confusion_matrix_file),
+            caption="En iyi modelin test verisi sonuçları"
+        )
+
+        st.caption(
+            "Satırlar gerçek sınıfları, sütunlar modelin "
+            "tahmin ettiği sınıfları gösterir."
+        )
 # --------------------------------------------------
 # KULLANICI METİN GİRİŞİ
 # --------------------------------------------------
