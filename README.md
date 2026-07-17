@@ -1,5 +1,5 @@
 # BugTriage AI
-
+[![Project Tests](https://github.com/Afrataman/BugTriageAI/actions/workflows/tests.yml/badge.svg)](https://github.com/Afrataman/BugTriageAI/actions/workflows/tests.yml)
 BugTriage AI is a machine learning application that classifies software issue descriptions into three categories:
 
 - Bug
