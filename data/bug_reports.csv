@@ -89,3 +89,4 @@ Confusion matrix görselinin nasıl yorumlanacağı belgelenmeli.,Documentation
 Desteklenen Python sürümleri kurulum sayfasında belirtilmeli.,Documentation
 Bilinen sorunlar için ayrı bir dokümantasyon bölümü hazırlanmalı.,Documentation
 Proje lisansı ve kullanım koşulları README dosyasında açıklanmalı.,Documentation
+login butonuna basoıldığında uygulama kapanıyor,Documentation
